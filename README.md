@@ -2,9 +2,7 @@
 
 **Sistem Informasi Penilaian Layanan Disdukcapil**
 
-A web-based public service rating system that allows citizens to submit anonymous ratings and feedback while enabling administrators to monitor service quality.
-
----
+A web-based public service rating system that allows citizens to submit anonymous ratings and feedback while enabling administrators to monitor service quality
 
 ## Tech Stack
 
