@@ -1,4 +1,4 @@
-# 🌟 E-RATING DISDUKCAPIL
+# E-RATING DISDUKCAPIL
 
 **Sistem Informasi Penilaian Layanan Disdukcapil**
 
@@ -6,7 +6,7 @@ A web-based public service rating system that allows citizens to submit anonymou
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 <p align="left">
   <img src="https://skillicons.dev/icons?i=react,nodejs,express,mysql,js,html,css,git,github,vscode" />
@@ -14,10 +14,10 @@ A web-based public service rating system that allows citizens to submit anonymou
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
-SIPELA/
+e-Rating Disdukcapil/
 ├── frontend/
 ├── backend/
 ├── database/
@@ -26,17 +26,17 @@ SIPELA/
 
 ---
 
-## ✨ Features
+## Features
 
-- ⭐ Anonymous Rating
-- 💬 Anonymous Reviews
-- 👨‍💼 Admin Dashboard
-- 📊 Rating Statistics
-- 📁 Service Management
+-  Anonymous Rating
+-  Anonymous Reviews
+-  Admin Dashboard
+-  Rating Statistics
+-  Service Management
 
 ---
 
-## 👥 Team
+## Team
 
 - Frontend : Andra Ramadhan, Keyla Caesar Kalis, Angga Imam Alfahri
 - Backend : Dea Ananda Putri,Hagya Mutiara Assidiqi
