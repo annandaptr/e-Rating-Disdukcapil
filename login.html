@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Sistem Rating</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Arial,sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0b6b3a;
+    overflow:hidden;
+}
+
+/* Logo Background */
+.bg-logo{
+    position:fixed;
+    width:650px;
+    opacity:0.08;
+    z-index:0;
+    pointer-events:none;
+}
+
+/* Login Box */
+.login-box{
+    position:relative;
+    z-index:10;
+    width:380px;
+    background:rgba(255,255,255,.95);
+    border-radius:18px;
+    padding:35px;
+    box-shadow:0 10px 35px rgba(0,0,0,.35);
+}
+
+.logo{
+    text-align:center;
+}
+
+.logo img{
+    width:90px;
+    margin-bottom:15px;
+}
+
+h2{
+    text-align:center;
+    color:#0b6b3a;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:18px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#0b6b3a;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    border:none;
+    background:#0b6b3a;
+    color:white;
+    font-size:16px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#084d2a;
+}
+
+.footer{
+    margin-top:15px;
+    text-align:center;
+}
+
+.footer a{
+    text-decoration:none;
+    color:#0b6b3a;
+}
+
+</style>
+</head>
+
+<body>
+
+<img src="logo_disduk-removebg-preview.png" class="bg-logo">
+
+<div class="login-box">
+
+<div class="logo">
+<img src="logo_disduk-removebg-preview.png">
+</div>
+
+<h2>SISTEM RATING</h2>
+
+<form>
+
+<label>Username</label>
+<input type="text" placeholder="Masukkan Username">
+
+<label>Password</label>
+<input type="password" placeholder="Masukkan Password">
+
+<button>LOGIN</button>
+
+</form>
+
+<div class="footer">
+Belum punya akun?
+<a href="#">Daftar</a>
+</div>
+
+</div>
+
+</body>
+</html>
