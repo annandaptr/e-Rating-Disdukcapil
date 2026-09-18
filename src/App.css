@@ -1,0 +1,268 @@
+* {
+  box-sizing: border-box;
+}
+
+.login-page {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  background: #f4f7fb;
+}
+
+.information-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 65px;
+  overflow: hidden;
+  color: white;
+  background:
+    radial-gradient(circle at 10% 90%, #14b8a6 0, transparent 35%),
+    linear-gradient(135deg, #075985, #0e7490 55%, #0891b2);
+}
+
+.information-panel::after {
+  content: "";
+  position: absolute;
+  right: -100px;
+  bottom: -150px;
+  width: 420px;
+  height: 420px;
+  border: 70px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.brand {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand-logo {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: white;
+  color: #0e7490;
+  font-weight: 800;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.brand p {
+  margin: 4px 0 0;
+  color: #cffafe;
+  font-size: 14px;
+}
+
+.welcome-text {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 14px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+}
+
+.welcome-text h2 {
+  margin: 0 0 18px;
+  font-size: clamp(32px, 4vw, 54px);
+  line-height: 1.15;
+}
+
+.welcome-text p {
+  max-width: 540px;
+  margin: 0;
+  color: #e0f2fe;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.copyright {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #bae6fd;
+  font-size: 13px;
+}
+
+.form-panel {
+  display: grid;
+  place-items: center;
+  padding: 40px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+}
+
+.form-heading {
+  margin-bottom: 35px;
+}
+
+.form-heading span {
+  color: #0891b2;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.form-heading h2 {
+  margin: 8px 0;
+  color: #172033;
+  font-size: 36px;
+}
+
+.form-heading p {
+  margin: 0;
+  color: #64748b;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 9px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.form-group input {
+  width: 100%;
+  height: 52px;
+  padding: 0 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  background: white;
+  color: #172033;
+  font-size: 15px;
+}
+
+.form-group input:focus {
+  border-color: #0891b2;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12);
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 105px;
+}
+
+.show-password {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: #0891b2;
+  font-weight: 700;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3px 0 25px;
+  font-size: 13px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+}
+
+.form-options a {
+  color: #0891b2;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.login-button {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0e7490, #0891b2);
+  color: white;
+  font-size: 15px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(8, 145, 178, 0.22);
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #155e75, #0e7490);
+}
+
+.security-message {
+  margin-top: 20px;
+  color: #94a3b8;
+  text-align: center;
+  font-size: 12px;
+}
+
+@media (max-width: 850px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .information-panel {
+    min-height: 300px;
+    padding: 35px 28px;
+  }
+
+  .welcome-text h2 {
+    font-size: 30px;
+  }
+
+  .welcome-text p,
+  .copyright {
+    display: none;
+  }
+
+  .form-panel {
+    padding: 45px 24px;
+  }
+}
+.disdukcapil-logo {
+  object-fit: contain;
+  padding: 4px;
+  background: white;
+}
+.brand-logo.disdukcapil-logo {
+  width: 75px;
+  height: 62px;
+  padding: 4px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: white;
+}
