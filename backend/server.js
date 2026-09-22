@@ -10,12 +10,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Import routes
+const pelayananRoutes = require("./routes/pelayananRoutes");
+const ratingRoutes = require("./routes/ratingRoutes");         // ← TAMBAH INI
+
 // Route testing
 app.get("/", (req, res) => {
     res.json({
         message: "Backend e-Rating Disdukcapil berjalan!"
     });
 });
+
+// Daftarkan routes
+app.use("/api/pelayanan", pelayananRoutes);
+app.use("/api/ratings", ratingRoutes);                          // ← TAMBAH INI
 
 const PORT = process.env.PORT || 3000;
 
