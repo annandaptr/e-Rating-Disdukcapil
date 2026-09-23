@@ -1,0 +1,231 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ===== Panel kiri: info ===== */
+.information-panel {
+  flex: 1 1 420px;
+  min-height: 100vh;
+  background: #1B2418;
+  color: #F1F3EC;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.brand-logo.disdukcapil-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #F1F3EC;
+  padding: 4px;
+  border: 2px solid #B23A2E;
+}
+
+.brand h1 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #F1F3EC;
+}
+
+.brand p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #CBD4BE;
+}
+
+.welcome-text {
+  margin-top: 2.5rem;
+}
+
+.welcome-text .badge {
+  display: inline-block;
+  background: rgba(184, 146, 63, 0.25);
+  color: #E8C77A;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-text h2 {
+  font-size: 1.7rem;
+  line-height: 1.35;
+  margin: 0 0 1rem 0;
+  color: #F1F3EC;
+}
+
+.welcome-text p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #CBD4BE;
+  max-width: 420px;
+}
+
+.copyright {
+  font-size: 0.75rem;
+  color: #54604C;
+  margin: 0;
+}
+
+/* ===== Panel kanan: form ===== */
+.form-panel {
+  flex: 1 1 420px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F1F3EC;
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border: 1px solid #CBD4BE;
+  border-radius: 10px;
+  padding: 2.5rem 2rem;
+}
+
+.form-heading span {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #B23A2E;
+  margin-bottom: 0.4rem;
+}
+
+.form-heading h2 {
+  font-size: 1.4rem;
+  color: #1B2418;
+  margin: 0 0 0.3rem 0;
+}
+
+.form-heading p {
+  font-size: 0.9rem;
+  color: #54604C;
+  margin: 0 0 1.5rem 0;
+}
+
+.form-group {
+  margin-bottom: 1.1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #1B2418;
+  margin-bottom: 0.35rem;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #CBD4BE;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  background: #F1F3EC;
+  color: #1B2418;
+}
+
+.form-group input:focus {
+  border-color: #3D7A5C;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field .show-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #3D7A5C;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.form-options {
+  margin: 0.5rem 0 0.25rem 0;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #54604C;
+  cursor: pointer;
+}
+
+.remember-me input {
+  width: auto;
+}
+
+.login-button {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.75rem;
+  background: #B23A2E;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #96302a;
+}
+
+.login-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.security-message {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #94a09a;
+}
+
+/* Responsif: tumpuk ke bawah di layar kecil */
+@media (max-width: 800px) {
+  .information-panel,
+  .form-panel {
+    min-height: auto;
+  }
+
+  .information-panel {
+    padding: 2rem 1.5rem;
+  }
+
+  .welcome-text h2 {
+    font-size: 1.4rem;
+  }
+}
