@@ -151,6 +151,18 @@ function LandingPage() {
 
       <footer className="lp-footer">
         <p>© {new Date().getFullYear()} e-Rating Disdukcapil — Disdukcapil</p>
+      <Link
+       to="/login"
+       style={{
+         display: "block",
+         marginTop: "6px",
+        fontSize: "12px",
+        opacity: 0.6,
+        textDecoration: "underline",
+      }}
+>
+  Admin
+</Link>
       </footer>
     </div>
   )
