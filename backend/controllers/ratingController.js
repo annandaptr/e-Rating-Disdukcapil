@@ -21,13 +21,13 @@ const createRating = async (req, res) => {
       });
     }
 
-    // Validasi: komentar gak boleh kepanjangan
-  if (comment && comment.length > 500) {
-  return res.status(400).json({
-    success: false,
-    message: "Komentar maksimal 500 karakter",
-   });
- }
+       // Validasi: komentar gak boleh kepanjangan
+    if (comment && comment.length > 500) {
+      return res.status(400).json({
+        success: false,
+        message: "Komentar maksimal 500 karakter",
+      });
+    }
 
     const insertId = await ratingModel.createRating(
       pelayanan_id,
