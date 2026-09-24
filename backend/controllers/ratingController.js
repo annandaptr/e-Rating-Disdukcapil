@@ -13,12 +13,21 @@ const createRating = async (req, res) => {
     }
 
     // Validasi: rating harus angka 1-5
-    if (rating < 1 || rating > 5) {
+    const ratingNum = Number(rating);
+    if (!Number.isInteger(ratingNum) || ratingNum < 1 || ratingNum > 5) {
       return res.status(400).json({
         success: false,
         message: "Rating harus antara 1 sampai 5",
       });
     }
+
+    // Validasi: komentar gak boleh kepanjangan
+  if (comment && comment.length > 500) {
+  return res.status(400).json({
+    success: false,
+    message: "Komentar maksimal 500 karakter",
+   });
+ }
 
     const insertId = await ratingModel.createRating(
       pelayanan_id,

@@ -141,7 +141,7 @@ function RatingPage() {
       `}</style>
 
       <nav className="rp-navbar">
-        <Link to="/" className="rp-navbar-logo">LayananKita</Link>
+        <Link to="/" className="rp-navbar-logo">e-Rating Disdukcapil</Link>
         <Link to="/rating" className="rp-btn rp-btn-primary">Beri Rating</Link>
       </nav>
 
@@ -211,7 +211,7 @@ function RatingPage() {
       </div>
 
       <footer className="rp-footer">
-        <p>© {new Date().getFullYear()} LayananKita — Disdukcapil</p>
+        <p>© {new Date().getFullYear()} e-Rating Disdukcapil — Disdukcapil</p>
       </footer>
     </div>
   )

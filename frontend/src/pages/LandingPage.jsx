@@ -114,7 +114,7 @@ function LandingPage() {
       `}</style>
 
       <nav className="lp-navbar">
-        <Link to="/" className="lp-navbar-logo">LayananKita</Link>
+        <Link to="/" className="lp-navbar-logo">e-Rating Disdukcapil</Link>
         <Link to="/rating" className="lp-btn lp-btn-primary">Beri Rating</Link>
       </nav>
 
@@ -150,7 +150,7 @@ function LandingPage() {
       </section>
 
       <footer className="lp-footer">
-        <p>© {new Date().getFullYear()} LayananKita — Disdukcapil</p>
+        <p>© {new Date().getFullYear()} e-Rating Disdukcapil — Disdukcapil</p>
       </footer>
     </div>
   )
