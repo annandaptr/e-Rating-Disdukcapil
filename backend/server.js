@@ -15,6 +15,8 @@ app.use(express.json());
 // Import routes
 const pelayananRoutes = require("./routes/pelayananRoutes");
 const ratingRoutes = require("./routes/ratingRoutes");         // ← TAMBAH INI
+const authRoutes = require("./routes/authRoutes");             // ← TAMBAH INI
+const adminRoutes = require("./routes/adminRoutes");
 
 // Route testing
 app.get("/", (req, res) => {
@@ -26,6 +28,8 @@ app.get("/", (req, res) => {
 // Daftarkan routes
 app.use("/api/pelayanan", pelayananRoutes);
 app.use("/api/ratings", ratingRoutes);                          // ← TAMBAH INI
+app.use("/api/auth", authRoutes);                                // ← TAMBAH INI 
+app.use("/api/admins", adminRoutes); 
 
 const PORT = process.env.PORT || 3000;
 

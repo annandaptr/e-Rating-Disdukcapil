@@ -2,66 +2,60 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logoDisdukcapil from "../assets/logo-disdukcapil.png";
 import "../App.css";
-import "./login.css";
+import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [nik, setNik] = useState("");
   const [kataSandi, setKataSandi] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [pesanError, setPesanError] = useState("");
   const [sedangLogin, setSedangLogin] = useState(false);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     setPesanError("");
     setSedangLogin(true);
 
-    const daftarAkun = [
-      {
-        nama: "Super Admin",
-        email: "superadmin@disdukcapil.go.id",
-        password: "admin123",
-        role: "Super Admin",
-      },
-      {
-        nama: "Admin Pelayanan",
-        email: "admin@disdukcapil.go.id",
-        password: "admin123",
-        role: "Admin",
-      },
-    ];
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nik,
+          password: kataSandi,
+        }),
+      });
 
-    const akunDitemukan = daftarAkun.find(
-      (akun) =>
-        akun.email === email &&
-        akun.password === kataSandi,
-    );
+      const hasil = await response.json();
 
-    setTimeout(() => {
-      if (akunDitemukan) {
-        const dataLogin = {
-          nama: akunDitemukan.nama,
-          email: akunDitemukan.email,
-          role: akunDitemukan.role,
-        };
-
+      if (hasil.success) {
         localStorage.setItem(
-          "userLogin",
-          JSON.stringify(dataLogin),
+          "adminAuth",
+          JSON.stringify({
+            token: hasil.data.token,
+            id: hasil.data.admin.id,
+            nik: hasil.data.admin.nik,
+            nama: hasil.data.admin.nama,
+            role: hasil.data.admin.role,
+          }),
         );
 
-        navigate("/dashboard");
+        navigate("/admin/dashboard");
       } else {
-        setPesanError(
-          "Email atau kata sandi yang dimasukkan salah.",
-        );
-
+        setPesanError(hasil.message || "NIK atau kata sandi salah.");
         setSedangLogin(false);
       }
-    }, 500);
+    } catch (error) {
+      setPesanError(
+        "Tidak bisa terhubung ke server. Coba lagi beberapa saat.",
+      );
+      setSedangLogin(false);
+    }
   };
 
   return (
@@ -123,8 +117,8 @@ function Login() {
                 padding: "12px 14px",
                 marginBottom: "18px",
                 borderRadius: "9px",
-                background: "#fee2e2",
-                color: "#b91c1c",
+                background: "#F6E7E4",
+                color: "#B23A2E",
                 fontSize: "14px",
               }}
             >
@@ -133,17 +127,19 @@ function Login() {
           )}
 
           <div className="form-group">
-            <label htmlFor="email">
-              Email
+            <label htmlFor="nik">
+              NIK
             </label>
 
             <input
-              id="email"
-              type="email"
-              placeholder="Masukkan email admin"
-              value={email}
+              id="nik"
+              type="text"
+              inputMode="numeric"
+              maxLength={16}
+              placeholder="Masukkan NIK admin (16 digit)"
+              value={nik}
               onChange={(event) =>
-                setEmail(event.target.value)
+                setNik(event.target.value.replace(/\D/g, ""))
               }
               required
             />

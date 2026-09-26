@@ -269,7 +269,7 @@ function Laporan() {
 
         <nav className="sidebar-menu">
           <a
-            href="/dashboard"
+            href="/admin/dashboard"
             className="menu-item"
             style={{ textDecoration: "none" }}
           >
@@ -278,7 +278,7 @@ function Laporan() {
           </a>
 
           <a
-            href="/laporan"
+            href="/admin/laporan"
             className="menu-item active"
             style={{ textDecoration: "none" }}
           >
@@ -287,7 +287,7 @@ function Laporan() {
           </a>
 
           <a
-            href="/kelola-admin"
+            href="/admin/kelola"
             className="menu-item"
             style={{ textDecoration: "none" }}
           >

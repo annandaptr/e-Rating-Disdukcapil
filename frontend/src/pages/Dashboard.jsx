@@ -75,7 +75,7 @@ function Dashboard() {
 
         <nav className="sidebar-menu">
           <a
-            href="/dashboard"
+            href="/admin/dashboard"
             className="menu-item active"
             style={{ textDecoration: "none" }}
           >
@@ -84,7 +84,7 @@ function Dashboard() {
           </a>
 
           <a
-            href="/laporan"
+            href="/admin/laporan"
             className="menu-item"
             style={{ textDecoration: "none" }}
           >
@@ -93,7 +93,7 @@ function Dashboard() {
           </a>
 
           <a
-            href="/kelola-admin"
+            href="/admin/kelola"
             className="menu-item"
             style={{ textDecoration: "none" }}
           >
@@ -267,7 +267,7 @@ function Dashboard() {
                 </div>
 
                 <a
-                  href="/laporan"
+                  href="/admin/laporan"
                   style={{
                     color: "#0891b2",
                     textDecoration: "none",
