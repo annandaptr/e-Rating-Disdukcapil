@@ -32,10 +32,3 @@ e-Rating Disdukcapil/
 -  Service Management
 
 ---
-
-## Team
-
-- Frontend : Andra Ramadhan, Keyla Caesar Kalis, Angga Imam Alfahri
-- Backend : Dea Ananda Putri,Hagya Mutiara Assidiqi
-
----
