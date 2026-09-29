@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import KelolaAdmin from "./pages/KelolaAdmin";
 import Laporan from "./pages/Laporan";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 function App() {
   return (
@@ -17,9 +18,30 @@ function App() {
         <Route path="/rating" element={<RatingPage />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/kelola" element={<KelolaAdmin />} />
-        <Route path="/admin/laporan" element={<Laporan />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/kelola"
+          element={
+            <ProtectedRoute>
+              <KelolaAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/laporan"
+          element={
+            <ProtectedRoute>
+              <Laporan />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -26,59 +26,29 @@ import logoDisdukcapil from "../assets/logo-disdukcapil.png";
 import "./Dashboard.css";
 import "./Laporan.css";
 
-const dataRating = [
-  {
-    id: "RTG-001",
-    tanggal: "2026-09-08",
-    layanan: "KTP Elektronik",
-    rating: 5,
-    status: "Sangat Puas",
-    ulasan: "Pelayanan cepat dan petugasnya ramah.",
-  },
-  {
-    id: "RTG-002",
-    tanggal: "2026-09-08",
-    layanan: "Kartu Keluarga",
-    rating: 4,
-    status: "Puas",
-    ulasan: "Prosesnya cukup cepat dan jelas.",
-  },
-  {
-    id: "RTG-003",
-    tanggal: "2026-09-07",
-    layanan: "Akta Kelahiran",
-    rating: 3,
-    status: "Cukup",
-    ulasan: "Antrean cukup lama tetapi petugas membantu.",
-  },
-  {
-    id: "RTG-004",
-    tanggal: "2026-09-07",
-    layanan: "Kartu Identitas Anak",
-    rating: 5,
-    status: "Sangat Puas",
-    ulasan: "Proses mudah dan sangat memuaskan.",
-  },
-  {
-    id: "RTG-005",
-    tanggal: "2026-09-06",
-    layanan: "Akta Kematian",
-    rating: 2,
-    status: "Kurang Puas",
-    ulasan: "Informasi persyaratan perlu diperjelas.",
-  },
-  {
-    id: "RTG-006",
-    tanggal: "2026-09-05",
-    layanan: "Pindah Datang",
-    rating: 4,
-    status: "Puas",
-    ulasan: "Petugas responsif dan informatif.",
-  },
-];
+const API_URL = "http://localhost:3000/api/ratings";
+
+const labelStatus = (rating) => {
+  switch (rating) {
+    case 5:
+      return "Sangat Puas";
+    case 4:
+      return "Puas";
+    case 3:
+      return "Cukup";
+    case 2:
+      return "Kurang Puas";
+    default:
+      return "Tidak Puas";
+  }
+};
 
 function Laporan() {
   const navigate = useNavigate();
+
+  const adminAuth = JSON.parse(
+    localStorage.getItem("adminAuth") || "{}",
+  );
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [pencarian, setPencarian] = useState("");
@@ -87,9 +57,59 @@ function Laporan() {
   const [tanggalAwal, setTanggalAwal] = useState("");
   const [tanggalAkhir, setTanggalAkhir] = useState("");
 
-  const dataLogin = JSON.parse(
-    localStorage.getItem("userLogin") || "{}",
-  );
+  const [dataRating, setDataRating] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorFetch, setErrorFetch] = useState("");
+
+  const fetchRatings = async () => {
+    setLoading(true);
+    setErrorFetch("");
+
+    try {
+      const response = await fetch(API_URL, {
+        headers: {
+          Authorization: `Bearer ${adminAuth.token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem("adminAuth");
+        navigate("/login");
+        return;
+      }
+
+      const hasil = await response.json();
+
+      if (hasil.success) {
+        const dataDiolah = hasil.data.map((item) => ({
+          id: `RTG-${String(item.id).padStart(3, "0")}`,
+          tanggal: item.created_at.slice(0, 10),
+          layanan: item.nama_pelayanan,
+          rating: item.rating,
+          status: labelStatus(item.rating),
+          ulasan: item.comment || "-",
+        }));
+
+        setDataRating(dataDiolah);
+      } else {
+        setErrorFetch(hasil.message || "Gagal memuat data laporan");
+      }
+    } catch (error) {
+      setErrorFetch("Tidak bisa terhubung ke server.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRatings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const daftarLayanan = useMemo(() => {
+    const unik = new Set(dataRating.map((item) => item.layanan));
+    return Array.from(unik);
+  }, [dataRating]);
 
   const hasilFilter = useMemo(() => {
     return dataRating.filter((item) => {
@@ -101,20 +121,16 @@ function Laporan() {
         item.ulasan.toLowerCase().includes(kataKunci);
 
       const sesuaiLayanan =
-        layanan === "Semua" ||
-        item.layanan === layanan;
+        layanan === "Semua" || item.layanan === layanan;
 
       const sesuaiRating =
-        rating === "Semua" ||
-        item.rating === Number(rating);
+        rating === "Semua" || item.rating === Number(rating);
 
       const sesuaiTanggalAwal =
-        tanggalAwal === "" ||
-        item.tanggal >= tanggalAwal;
+        tanggalAwal === "" || item.tanggal >= tanggalAwal;
 
       const sesuaiTanggalAkhir =
-        tanggalAkhir === "" ||
-        item.tanggal <= tanggalAkhir;
+        tanggalAkhir === "" || item.tanggal <= tanggalAkhir;
 
       return (
         sesuaiPencarian &&
@@ -124,13 +140,7 @@ function Laporan() {
         sesuaiTanggalAkhir
       );
     });
-  }, [
-    pencarian,
-    layanan,
-    rating,
-    tanggalAwal,
-    tanggalAkhir,
-  ]);
+  }, [dataRating, pencarian, layanan, rating, tanggalAwal, tanggalAkhir]);
 
   const resetFilter = () => {
     setPencarian("");
@@ -150,30 +160,17 @@ function Laporan() {
       Ulasan: item.ulasan,
     }));
 
-    const worksheet =
-      XLSX.utils.json_to_sheet(dataExcel);
-
+    const worksheet = XLSX.utils.json_to_sheet(dataExcel);
     const workbook = XLSX.utils.book_new();
 
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      "Laporan E-Rating",
-    );
-
-    XLSX.writeFile(
-      workbook,
-      "laporan-e-rating.xlsx",
-    );
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Laporan E-Rating");
+    XLSX.writeFile(workbook, "laporan-e-rating.xlsx");
   };
 
   const exportPDF = () => {
-    const documentPDF = new jsPDF({
-      orientation: "landscape",
-    });
+    const documentPDF = new jsPDF({ orientation: "landscape" });
 
     documentPDF.setFontSize(16);
-
     documentPDF.text(
       "Laporan E-Rating Disdukcapil Kabupaten Subang",
       14,
@@ -181,27 +178,11 @@ function Laporan() {
     );
 
     documentPDF.setFontSize(10);
-
-    documentPDF.text(
-      `Jumlah data: ${hasilFilter.length}`,
-      14,
-      23,
-    );
+    documentPDF.text(`Jumlah data: ${hasilFilter.length}`, 14, 23);
 
     autoTable(documentPDF, {
       startY: 30,
-
-      head: [
-        [
-          "ID",
-          "Tanggal",
-          "Layanan",
-          "Rating",
-          "Status",
-          "Ulasan",
-        ],
-      ],
-
+      head: [["ID", "Tanggal", "Layanan", "Rating", "Status", "Ulasan"]],
       body: hasilFilter.map((item) => [
         item.id,
         item.tanggal,
@@ -210,22 +191,16 @@ function Laporan() {
         item.status,
         item.ulasan,
       ]),
-
-      headStyles: {
-        fillColor: [14, 116, 144],
-      },
-
-      styles: {
-        fontSize: 8,
-      },
+      headStyles: { fillColor: [61, 122, 92] },
+      styles: { fontSize: 8 },
     });
 
     documentPDF.save("laporan-e-rating.pdf");
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("userLogin");
-    navigate("/");
+    localStorage.removeItem("adminAuth");
+    navigate("/login");
   };
 
   return (
@@ -237,11 +212,7 @@ function Laporan() {
         />
       )}
 
-      <aside
-        className={`sidebar ${
-          sidebarOpen ? "sidebar-open" : ""
-        }`}
-      >
+      <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-brand">
           <img
             className="sidebar-logo disdukcapil-logo"
@@ -263,9 +234,7 @@ function Laporan() {
           </button>
         </div>
 
-        <p className="menu-title">
-          MENU UTAMA
-        </p>
+        <p className="menu-title">MENU UTAMA</p>
 
         <nav className="sidebar-menu">
           <a
@@ -301,9 +270,8 @@ function Laporan() {
 
           <div>
             <strong>
-              {dataLogin.role || "Super Admin"}
+              {adminAuth.role === "super_admin" ? "Super Admin" : "Admin"}
             </strong>
-
             <span>Akses terverifikasi</span>
           </div>
         </div>
@@ -336,30 +304,19 @@ function Laporan() {
           </div>
 
           <div className="navbar-right">
-            <button
-              type="button"
-              className="notification-button"
-            >
+            <button type="button" className="notification-button">
               <Bell size={20} />
               <span />
             </button>
 
             <div className="admin-profile">
               <div className="admin-avatar">
-                {dataLogin.role === "Admin"
-                  ? "AD"
-                  : "SA"}
+                {adminAuth.role === "super_admin" ? "SA" : "AD"}
               </div>
 
               <div className="admin-info">
-                <strong>
-                  {dataLogin.nama || "Super Admin"}
-                </strong>
-
-                <span>
-                  {dataLogin.email ||
-                    "superadmin@disdukcapil.go.id"}
-                </span>
+                <strong>{adminAuth.nama}</strong>
+                <span>NIK: {adminAuth.nik}</span>
               </div>
 
               <ChevronDown size={18} />
@@ -371,11 +328,7 @@ function Laporan() {
           <section className="report-heading">
             <div>
               <h2>Laporan Penilaian</h2>
-
-              <p>
-                Cari, filter, dan unduh data penilaian
-                masyarakat.
-              </p>
+              <p>Cari, filter, dan unduh data penilaian masyarakat.</p>
             </div>
 
             <div className="export-buttons">
@@ -406,10 +359,7 @@ function Laporan() {
                 <strong>Filter Laporan</strong>
               </div>
 
-              <button
-                type="button"
-                onClick={resetFilter}
-              >
+              <button type="button" onClick={resetFilter}>
                 Reset Filter
               </button>
             </div>
@@ -422,57 +372,28 @@ function Laporan() {
                   type="text"
                   placeholder="Cari ID, layanan, atau ulasan..."
                   value={pencarian}
-                  onChange={(event) =>
-                    setPencarian(event.target.value)
-                  }
+                  onChange={(event) => setPencarian(event.target.value)}
                 />
               </div>
 
               <select
                 value={layanan}
-                onChange={(event) =>
-                  setLayanan(event.target.value)
-                }
+                onChange={(event) => setLayanan(event.target.value)}
               >
-                <option value="Semua">
-                  Semua Layanan
-                </option>
+                <option value="Semua">Semua Layanan</option>
 
-                <option value="KTP Elektronik">
-                  KTP Elektronik
-                </option>
-
-                <option value="Kartu Keluarga">
-                  Kartu Keluarga
-                </option>
-
-                <option value="Akta Kelahiran">
-                  Akta Kelahiran
-                </option>
-
-                <option value="Kartu Identitas Anak">
-                  Kartu Identitas Anak
-                </option>
-
-                <option value="Akta Kematian">
-                  Akta Kematian
-                </option>
-
-                <option value="Pindah Datang">
-                  Pindah Datang
-                </option>
+                {daftarLayanan.map((nama) => (
+                  <option key={nama} value={nama}>
+                    {nama}
+                  </option>
+                ))}
               </select>
 
               <select
                 value={rating}
-                onChange={(event) =>
-                  setRating(event.target.value)
-                }
+                onChange={(event) => setRating(event.target.value)}
               >
-                <option value="Semua">
-                  Semua Rating
-                </option>
-
+                <option value="Semua">Semua Rating</option>
                 <option value="5">5 Bintang</option>
                 <option value="4">4 Bintang</option>
                 <option value="3">3 Bintang</option>
@@ -483,17 +404,13 @@ function Laporan() {
               <input
                 type="date"
                 value={tanggalAwal}
-                onChange={(event) =>
-                  setTanggalAwal(event.target.value)
-                }
+                onChange={(event) => setTanggalAwal(event.target.value)}
               />
 
               <input
                 type="date"
                 value={tanggalAkhir}
-                onChange={(event) =>
-                  setTanggalAkhir(event.target.value)
-                }
+                onChange={(event) => setTanggalAkhir(event.target.value)}
               />
             </div>
           </section>
@@ -528,7 +445,39 @@ function Laporan() {
                 </thead>
 
                 <tbody>
-                  {hasilFilter.length > 0 ? (
+                  {loading && (
+                    <tr>
+                      <td colSpan="6" style={{ textAlign: "center", padding: "30px" }}>
+                        Memuat data...
+                      </td>
+                    </tr>
+                  )}
+
+                  {!loading && errorFetch && (
+                    <tr>
+                      <td
+                        colSpan="6"
+                        style={{ textAlign: "center", padding: "30px", color: "#B23A2E" }}
+                      >
+                        {errorFetch}
+                      </td>
+                    </tr>
+                  )}
+
+                  {!loading && !errorFetch && hasilFilter.length === 0 && (
+                    <tr>
+                      <td colSpan="6">
+                        <div className="no-data">
+                          <Search size={30} />
+                          <strong>Data tidak ditemukan</strong>
+                          <span>Coba ubah pencarian atau filter.</span>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+
+                  {!loading &&
+                    !errorFetch &&
                     hasilFilter.map((item) => (
                       <tr key={item.id}>
                         <td>
@@ -540,9 +489,7 @@ function Laporan() {
                         <td>{item.layanan}</td>
 
                         <td>
-                          <span className="table-rating">
-                            ★ {item.rating}
-                          </span>
+                          <span className="table-rating">★ {item.rating}</span>
                         </td>
 
                         <td>
@@ -553,26 +500,9 @@ function Laporan() {
                           </span>
                         </td>
 
-                        <td className="review-column">
-                          {item.ulasan}
-                        </td>
+                        <td className="review-column">{item.ulasan}</td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="6">
-                        <div className="no-data">
-                          <Search size={30} />
-                          <strong>
-                            Data tidak ditemukan
-                          </strong>
-                          <span>
-                            Coba ubah pencarian atau filter.
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
+                    ))}
                 </tbody>
               </table>
             </div>
