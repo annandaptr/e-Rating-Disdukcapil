@@ -6,7 +6,12 @@ A web-based public service rating system that allows citizens to submit anonymou
 ## Tech Stack
 
 <p align="left">
-  <img src="https://skillicons.dev/icons?i=react,nodejs,express,mysql,js,html,css,git,github,vscode" />
+  
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=react,nodejs,express,js,html,css,git,github,vscode" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mariadb/mariadb-original.svg" width="48" height="48" alt="MariaDB" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dbeaver/dbeaver-original.svg" width="48" height="48" alt="DBeaver" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" width="48" height="48" alt="Postman" />
 </p>
 
 ---
