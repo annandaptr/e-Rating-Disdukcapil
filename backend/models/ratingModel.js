@@ -9,4 +9,21 @@ const createRating = async (pelayanan_id, rating, comment) => {
   return result.insertId;
 };
 
-module.exports = { createRating };
+// Ambil semua rating, sekalian nama pelayanannya
+const getAllRatings = async () => {
+  const [rows] = await db.execute(`
+    SELECT 
+      ratings.id, 
+      ratings.pelayanan_id, 
+      pelayanan.nama_pelayanan,
+      ratings.rating, 
+      ratings.comment, 
+      ratings.created_at
+    FROM ratings
+    JOIN pelayanan ON ratings.pelayanan_id = pelayanan.id
+    ORDER BY ratings.created_at DESC
+  `);
+  return rows;
+};
+
+module.exports = { createRating, getAllRatings };

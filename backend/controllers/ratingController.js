@@ -49,4 +49,20 @@ const createRating = async (req, res) => {
   }
 };
 
-module.exports = { createRating };
+const getAllRatings = async (req, res) => {
+  try {
+    const data = await ratingModel.getAllRatings();
+    res.status(200).json({
+      success: true,
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error getAllRatings:", error);
+    res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan saat mengambil data rating",
+    });
+  }
+};
+
+module.exports = { createRating, getAllRatings };
