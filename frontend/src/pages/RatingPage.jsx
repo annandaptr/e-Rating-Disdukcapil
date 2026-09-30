@@ -1,23 +1,35 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
-const dummyLayanan = [
-  { id: 1, nama_layanan: 'Kartu Keluarga' },
-  { id: 2, nama_layanan: 'KTP Elektronik' },
-  { id: 3, nama_layanan: 'Akta Kelahiran' },
-  { id: 4, nama_layanan: 'Akta Kematian' },
-  { id: 5, nama_layanan: 'Surat Pindah Domisili' },
-]
+const API_BASE = 'http://localhost:3000'
 
 async function getLayanan() {
-  await new Promise((resolve) => setTimeout(resolve, 300))
-  return dummyLayanan
+  const response = await fetch(`${API_BASE}/api/pelayanan`)
+  const hasil = await response.json()
+
+  if (hasil.success) {
+    return hasil.data
+  }
+
+  throw new Error(hasil.message || 'Gagal memuat layanan')
 }
 
-async function postRating({ layanan_id, rating, komentar }) {
-  await new Promise((resolve) => setTimeout(resolve, 300))
-  console.log('Rating dikirim (dummy):', { layanan_id, rating, komentar })
-  return { success: true }
+async function postRating({ pelayanan_id, rating, comment }) {
+  const response = await fetch(`${API_BASE}/api/ratings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pelayanan_id, rating, comment }),
+  })
+
+  if (response.status === 429) {
+    return {
+      success: false,
+      message: 'Terlalu banyak percobaan. Coba lagi beberapa saat lagi.',
+    }
+  }
+
+  const hasil = await response.json()
+  return hasil
 }
 
 function RatingPage() {
@@ -55,15 +67,25 @@ function RatingPage() {
     if (!validate()) return
 
     setSubmitting(true)
+    setErrors((prev) => ({ ...prev, submit: undefined }))
+
     try {
-      await postRating({
-        layanan_id: Number(layananId),
+      const hasil = await postRating({
+        pelayanan_id: Number(layananId),
         rating,
-        komentar: komentar.trim(),
+        comment: komentar.trim(),
       })
-      navigate('/success')
+
+      if (hasil.success) {
+        navigate('/success')
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          submit: hasil.message || 'Gagal mengirim rating. Coba lagi.',
+        }))
+      }
     } catch {
-      setErrors((prev) => ({ ...prev, submit: 'Gagal mengirim rating. Coba lagi.' }))
+      setErrors((prev) => ({ ...prev, submit: 'Tidak bisa terhubung ke server.' }))
     } finally {
       setSubmitting(false)
     }
@@ -163,7 +185,7 @@ function RatingPage() {
               </option>
               {layananList.map((item) => (
                 <option key={item.id} value={item.id}>
-                  {item.nama_layanan}
+                  {item.nama_pelayanan}
                 </option>
               ))}
             </select>
